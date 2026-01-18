@@ -104,9 +104,12 @@ registrationForm.addEventListener('submit', (e) => {
     if ((usernameErrorCount > 0) || (emailErrorCount > 0) || (passwordErrorCount > 0) || (confirmPasswordErrorCount > 0)) {
         alert("Please review errors before submitting.");
     } else {
+        data.username = usernameInput.value;
+        data.email = emailInput.value;
+        data.password = passwordInput.value;
         alert("Form submitted.");
     };
-    console.log(data);   
+    console.log(data.username);   
 });
 
 // Select all necessary DOM elements (form, inputs, error message spans).
