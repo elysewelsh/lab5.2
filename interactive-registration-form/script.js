@@ -7,9 +7,10 @@ let passwordInput = document.querySelector("#password");
 let passwordSpan = document.querySelector('#passwordError');
 let confirmPasswordInput = document.querySelector("#confirmPassword");
 let confirmPasswordSpan = document.querySelector('#confirmPasswordError');
-let u = 0;
-let p = 0;
-let c = 0;
+let usernameErrorCount = 0;
+let passwordErrorCount = 0;
+let confirmPasswordErrorCount = 0;
+let emailErrorCount = 0;
 const data = {
         username: registrationForm.elements.username.value,
         email: registrationForm.elements.email.value,
@@ -23,17 +24,35 @@ usernameInput.addEventListener('blur', (e) =>{
 function usernameVerify (input) {
     if (input.validity.valueMissing) {
         input.setCustomValidity('Please choose a username.');
-        u++;
+        usernameErrorCount++;
     }
     else if (input.validity.tooShort) {
         input.setCustomValidity("Please enter at least 5 characters.");
-        u++;
+        usernameErrorCount++;
     }
     else {
         input.setCustomValidity('');
-        u = 0;
+        usernameErrorCount = 0;
     }
     usernameSpan.textContent = input.validationMessage;
+};
+
+emailInput.addEventListener('blur', (e) => {
+    emailVerify(e.target);
+});
+
+function emailVerify (input) {
+        if (input.validity.typeMismatch) {
+        input.setCustomValidity('Please enter a valid email address, for example, name@example.com.');
+        emailErrorCount++;
+    } else if (input.validity.valueMissing) {
+        input.setCustomValidity('We need your email address to contact you!');
+        emailErrorCount++;
+    } else {
+        input.setCustomValidity('');
+        emailErrorCount = 0;
+    }
+    emailSpan.textContent = input.validationMessage;
 };
 
 passwordInput.addEventListener('blur', (e) => {
@@ -44,80 +63,50 @@ function passwordVerify (input) {
     const passwordCheck = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$/;
     if (input.validity.tooShort) {
     input.setCustomValidity("Please enter at least 8 characters.");
-    p++;
+    passwordErrorCount++;
     }
     else if (input.validity.valueMissing) {
     input.setCustomValidity("Please enter a password.");
-    p++;
+    passwordErrorCount++;
     }
     else if (passwordCheck.test(input.value) === false) {
     input.setCustomValidity("Password must be at least 8 characters long, include an uppercase letter, a lowercase letter, and a number.");
-    p++;
+    passwordErrorCount++;
     }
     else {
     input.setCustomValidity(''); // Clear custom error if valid
-    p = 0;
+    passwordErrorCount = 0;
     }
     passwordSpan.textContent = input.validationMessage;
 };
 
-// passwordInput.addEventListener('blur', (e) =>{
-//     const passwordCheck = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$/;
-//     const input = e.target;
-//     console.log(input);
-//     console.log(passwordCheck.test(input));
-//     if (input.validity.tooShort) {
-//     input.setCustomValidity("Please enter at least 8 characters.");
-//     }
-//     else if (input.validity.valueMissing) {
-//     input.setCustomValidity("Please enter a password.");
-//     }
-//     else if (passwordCheck.test(input.value) === false) {
-//     input.setCustomValidity("Password must be at least 8 characters long, include an uppercase letter, a lowercase letter, and a number.");
-//     }
-//     else {
-//     input.setCustomValidity(''); // Clear custom error if valid
-//     }
-//     passwordSpan.textContent = input.validationMessage;
-// });
-
-function confirmPasswordVerify (input) {
-  if (input.value !== passwordInput.value) {
-    input.setCustomValidity("Passwords do not match.");
-    c++;
-  }
-  else{
-    input.setCustomValidity('');
-    c = 0;
-  }
-  confirmPasswordSpan.textContent = input.validationMessage;
-};
 confirmPasswordInput.addEventListener("blur", (e) => {
   confirmPasswordVerify(e.target);
 });
 
+function confirmPasswordVerify (input) {
+  if (input.value !== passwordInput.value) {
+    input.setCustomValidity("Passwords do not match.");
+    confirmPasswordErrorCount++;
+  }
+  else{
+    input.setCustomValidity('');
+    confirmPasswordErrorCount = 0;
+  }
+  confirmPasswordSpan.textContent = input.validationMessage;
+};
+
 registrationForm.addEventListener('submit', (e) => {
     e.preventDefault();
     usernameVerify(usernameInput);
-    // const emailValue = data.email;
-    // const passwordValue = data.password;
-
-if ((u > 0) || (p > 0) || (c > 0)) {
-alert("Please review errors before submitting.");
-} else {
-alert("Form submitted.");
-};
-console.log("test");
-//     const check = registrationForm.checkValidity();
-//     console.log(check);
-//    if (!check){
-//   alert("please input valid details")
-//    }
-// else {
-//     alert('Form Submitted!');
-// }
-//     console.log(data);
-    
+    passwordVerify(passwordInput);
+    confirmPasswordVerify(confirmPasswordInput);
+    if ((usernameErrorCount > 0) || (emailErrorCount > 0) || (passwordErrorCount > 0) || (confirmPasswordErrorCount > 0)) {
+        alert("Please review errors before submitting.");
+    } else {
+        alert("Form submitted.");
+    };
+    console.log(data);   
 });
 
 // Select all necessary DOM elements (form, inputs, error message spans).
