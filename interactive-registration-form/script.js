@@ -7,40 +7,32 @@ let passwordInput = document.querySelector("#password");
 let passwordSpan = document.querySelector('#passwordError');
 let confirmPasswordInput = document.querySelector("#confirmPassword");
 let confirmPasswordSpan = document.querySelector('#confirmPasswordError');
+let u = 0;
 const data = {
         username: registrationForm.elements.username.value,
         email: registrationForm.elements.email.value,
         password: registrationForm.elements.password.value,
     };
 
-usernameInput.addEventListener('blur', (e) => {
-    const input = e.target;
-    console.log(e.target);
+usernameInput.addEventListener('blur', (e) =>{
+    usernameVerify(e.target);
+});
+
+function usernameVerify (input) {
     if (input.validity.valueMissing) {
         input.setCustomValidity('Please choose a username.');
+        u++;
     }
     else if (input.validity.tooShort) {
-    input.setCustomValidity("Please enter at least 5 characters.");
+        input.setCustomValidity("Please enter at least 5 characters.");
+        u++;
     }
     else {
         input.setCustomValidity('');
+        u = 0;
     }
-    usernameSpan.textContent = input.validationMessage;   
-});
-
-emailInput.addEventListener('blur', (e) => {
-    const input = e.target
-    if (input.validity.typeMismatch) {
-        input.setCustomValidity('Please enter a valid email address, for example, name@example.com.');
-    } else if (input.validity.valueMissing) {
-        input.setCustomValidity('We need your email address to contact you!');
-    }
-    else {
-        input.setCustomValidity(''); // Clear custom error if valid
-    }
-    // Display the custom message
-    emailSpan.textContent = input.validationMessage;
-});
+    usernameSpan.textContent = input.validationMessage;
+};
 
 
 passwordInput.addEventListener('blur', (e) =>{
@@ -74,6 +66,29 @@ confirmPasswordInput.addEventListener("blur", (e) => {
   confirmPasswordSpan.textContent = input.validationMessage;
 });
 
+registrationForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    usernameVerify(usernameInput);
+    // const emailValue = data.email;
+    // const passwordValue = data.password;
+
+if (u > 0) {
+alert("Please review errors before submitting.");
+} else {
+alert("Form submitted.");
+};
+console.log("test");
+//     const check = registrationForm.checkValidity();
+//     console.log(check);
+//    if (!check){
+//   alert("please input valid details")
+//    }
+// else {
+//     alert('Form Submitted!');
+// }
+//     console.log(data);
+    
+});
 
 // Select all necessary DOM elements (form, inputs, error message spans).
 // Load saved username: On page load, check if a username is saved in localStorage. If so, pre-fill the username field.
