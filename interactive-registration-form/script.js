@@ -16,6 +16,14 @@ const data = {
         email: registrationForm.elements.email.value,
         password: registrationForm.elements.password.value,
     };
+let user = localStorage.getItem('username');
+
+if (user == null) {
+    usernameInput.value = ""
+} else {
+    usernameInput.value = user;
+    usernameSpan.textContent = ("Welcome back, " + user);
+};
 
 usernameInput.addEventListener('blur', (e) =>{
     usernameVerify(e.target);
@@ -113,7 +121,8 @@ registrationForm.addEventListener('submit', (e) => {
         passwordInput.value = "";
         confirmPasswordInput. value = "";
     };
-    console.log(data.username);   
+    console.log(data.username);
+    localStorage.setItem('username', data.username);
 });
 
 // Select all necessary DOM elements (form, inputs, error message spans).
