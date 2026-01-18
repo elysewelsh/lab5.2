@@ -108,6 +108,10 @@ registrationForm.addEventListener('submit', (e) => {
         data.email = emailInput.value;
         data.password = passwordInput.value;
         alert("Form submitted.");
+        usernameInput.value = "";
+        emailInput.value = "";
+        passwordInput.value = "";
+        confirmPasswordInput. value = "";
     };
     console.log(data.username);   
 });
