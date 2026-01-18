@@ -8,6 +8,7 @@ let passwordSpan = document.querySelector('#passwordError');
 let confirmPasswordInput = document.querySelector("#confirmPassword");
 let confirmPasswordSpan = document.querySelector('#confirmPasswordError');
 let u = 0;
+let p = 0;
 const data = {
         username: registrationForm.elements.username.value,
         email: registrationForm.elements.email.value,
@@ -34,26 +35,50 @@ function usernameVerify (input) {
     usernameSpan.textContent = input.validationMessage;
 };
 
+passwordInput.addEventListener('blur', (e) => {
+    passwordVerify(e.target);
+});
 
-passwordInput.addEventListener('blur', (e) =>{
+function passwordVerify (input) {
     const passwordCheck = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$/;
-    const input = e.target;
-    console.log(input);
-    console.log(passwordCheck.test(input));
     if (input.validity.tooShort) {
     input.setCustomValidity("Please enter at least 8 characters.");
+    p++;
     }
     else if (input.validity.valueMissing) {
     input.setCustomValidity("Please enter a password.");
+    p++;
     }
     else if (passwordCheck.test(input.value) === false) {
     input.setCustomValidity("Password must be at least 8 characters long, include an uppercase letter, a lowercase letter, and a number.");
+    p++;
     }
     else {
     input.setCustomValidity(''); // Clear custom error if valid
+    p = 0;
     }
     passwordSpan.textContent = input.validationMessage;
-});
+}
+
+// passwordInput.addEventListener('blur', (e) =>{
+//     const passwordCheck = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$/;
+//     const input = e.target;
+//     console.log(input);
+//     console.log(passwordCheck.test(input));
+//     if (input.validity.tooShort) {
+//     input.setCustomValidity("Please enter at least 8 characters.");
+//     }
+//     else if (input.validity.valueMissing) {
+//     input.setCustomValidity("Please enter a password.");
+//     }
+//     else if (passwordCheck.test(input.value) === false) {
+//     input.setCustomValidity("Password must be at least 8 characters long, include an uppercase letter, a lowercase letter, and a number.");
+//     }
+//     else {
+//     input.setCustomValidity(''); // Clear custom error if valid
+//     }
+//     passwordSpan.textContent = input.validationMessage;
+// });
 
 confirmPasswordInput.addEventListener("blur", (e) => {
   const input = e.target;
@@ -72,7 +97,7 @@ registrationForm.addEventListener('submit', (e) => {
     // const emailValue = data.email;
     // const passwordValue = data.password;
 
-if (u > 0) {
+if ((u > 0) || (p > 0)) {
 alert("Please review errors before submitting.");
 } else {
 alert("Form submitted.");
