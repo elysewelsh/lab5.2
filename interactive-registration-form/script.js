@@ -11,7 +11,24 @@ const data = {
         username: registrationForm.elements.username.value,
         email: registrationForm.elements.email.value,
         password: registrationForm.elements.password.value,
+    };
+
+emailInput.addEventListener('blur', (e) => {
+    const input = e.target
+    // console.dir(input.validity)
+    // console.log(input.validationMessage)
+    if (input.validity.typeMismatch) {
+        input.setCustomValidity('Please enter a valid email address, for example, name@example.com.');
+    } else if (input.validity.valueMissing) {
+        input.setCustomValidity('We need your email address to contact you!');
     }
+    else {
+        input.setCustomValidity(''); // Clear custom error if valid
+    }
+    // Display the custom message or clear it
+    emailSpan.textContent = input.validationMessage;
+});
+
 
 passwordInput.addEventListener('blur', (e) =>{
     const passwordCheck = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$/;
