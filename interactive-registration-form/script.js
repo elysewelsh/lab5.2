@@ -41,7 +41,7 @@ passwordInput.addEventListener('blur', (e) =>{
     else if (input.validity.valueMissing) {
     input.setCustomValidity("Please enter a password");
     }
-    else if (passwordCheck.test(input) === false) {
+    else if (passwordCheck.test(input.value) === false) {
     input.setCustomValidity("Password must be at least 8 characters long, include an uppercase letter, a lowercase letter, and a number.");
     }
     else {
@@ -50,37 +50,22 @@ passwordInput.addEventListener('blur', (e) =>{
     passwordSpan.textContent = input.validationMessage;
 });
 
-// emailInput.addEventListener('blur', (e) => {
-//     const input = e.target
-//     // console.dir(input.validity)
-//     // console.log(input.validationMessage)
-//     if (input.validity.typeMismatch) {
-//         input.setCustomValidity('Please enter a valid email address, for example, name@example.com.');
-//     } else if (input.validity.valueMissing) {
-//         input.setCustomValidity('We need your email address to contact you!');
-//     }
-//     else {
-//         input.setCustomValidity(''); // Clear custom error if valid
-//     }
-//     // Display the custom message or clear it
-//     emailSpan.textContent = input.validationMessage;
-// })
-// confirmPasswordInput.addEventListener("blur", (e) => {
-//   const input = e.target;
-// console.log(confirmPasswordInput);
-// console.log(passwordInput.value);
-// console.log(e);
+confirmPasswordInput.addEventListener("blur", (e) => {
+  const input = e.target;
+console.log(confirmPasswordInput);
+console.log(passwordInput.value);
+console.log(e);
 
-//   if (input.value !== passwordInput.value) {
-//     input.setCustomValidity("Passwords do not match");
-//   }
-//   else{
-//     input.setCustomValidity(''); 
-//   }
-//   confirmPasswordSpan.textContent = input.validationMessage;
-//   // optional span if you have one
-//   // confirmPasswordSpan.textContent = input.validationMessage;
-// });
+  if (input.value !== passwordInput.value) {
+    input.setCustomValidity("Passwords do not match");
+  }
+  else{
+    input.setCustomValidity(''); 
+  }
+  confirmPasswordSpan.textContent = input.validationMessage;
+  // optional span if you have one
+  // confirmPasswordSpan.textContent = input.validationMessage;
+});
 
 
 // Select all necessary DOM elements (form, inputs, error message spans).
