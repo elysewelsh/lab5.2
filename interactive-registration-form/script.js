@@ -9,6 +9,7 @@ let confirmPasswordInput = document.querySelector("#confirmPassword");
 let confirmPasswordSpan = document.querySelector('#confirmPasswordError');
 let u = 0;
 let p = 0;
+let c = 0;
 const data = {
         username: registrationForm.elements.username.value,
         email: registrationForm.elements.email.value,
@@ -58,7 +59,7 @@ function passwordVerify (input) {
     p = 0;
     }
     passwordSpan.textContent = input.validationMessage;
-}
+};
 
 // passwordInput.addEventListener('blur', (e) =>{
 //     const passwordCheck = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$/;
@@ -80,15 +81,19 @@ function passwordVerify (input) {
 //     passwordSpan.textContent = input.validationMessage;
 // });
 
-confirmPasswordInput.addEventListener("blur", (e) => {
-  const input = e.target;
+function confirmPasswordVerify (input) {
   if (input.value !== passwordInput.value) {
     input.setCustomValidity("Passwords do not match.");
+    c++;
   }
   else{
-    input.setCustomValidity(''); 
+    input.setCustomValidity('');
+    c = 0;
   }
   confirmPasswordSpan.textContent = input.validationMessage;
+};
+confirmPasswordInput.addEventListener("blur", (e) => {
+  confirmPasswordVerify(e.target);
 });
 
 registrationForm.addEventListener('submit', (e) => {
@@ -97,7 +102,7 @@ registrationForm.addEventListener('submit', (e) => {
     // const emailValue = data.email;
     // const passwordValue = data.password;
 
-if ((u > 0) || (p > 0)) {
+if ((u > 0) || (p > 0) || (c > 0)) {
 alert("Please review errors before submitting.");
 } else {
 alert("Form submitted.");
