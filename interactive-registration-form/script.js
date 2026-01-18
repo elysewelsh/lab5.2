@@ -13,10 +13,23 @@ const data = {
         password: registrationForm.elements.password.value,
     };
 
+usernameInput.addEventListener('blur', (e) => {
+    const input = e.target;
+    console.log(e.target);
+    if (input.validity.valueMissing) {
+        input.setCustomValidity('Please choose a username.');
+    }
+    else if (input.validity.tooShort) {
+    input.setCustomValidity("Please enter at least 5 characters.");
+    }
+    else {
+        input.setCustomValidity('');
+    }
+    usernameSpan.textContent = input.validationMessage;   
+});
+
 emailInput.addEventListener('blur', (e) => {
     const input = e.target
-    // console.dir(input.validity)
-    // console.log(input.validationMessage)
     if (input.validity.typeMismatch) {
         input.setCustomValidity('Please enter a valid email address, for example, name@example.com.');
     } else if (input.validity.valueMissing) {
@@ -25,7 +38,7 @@ emailInput.addEventListener('blur', (e) => {
     else {
         input.setCustomValidity(''); // Clear custom error if valid
     }
-    // Display the custom message or clear it
+    // Display the custom message
     emailSpan.textContent = input.validationMessage;
 });
 
@@ -36,10 +49,10 @@ passwordInput.addEventListener('blur', (e) =>{
     console.log(input);
     console.log(passwordCheck.test(input));
     if (input.validity.tooShort) {
-    input.setCustomValidity("Please enter at least 8 characters");
+    input.setCustomValidity("Please enter at least 8 characters.");
     }
     else if (input.validity.valueMissing) {
-    input.setCustomValidity("Please enter a password");
+    input.setCustomValidity("Please enter a password.");
     }
     else if (passwordCheck.test(input.value) === false) {
     input.setCustomValidity("Password must be at least 8 characters long, include an uppercase letter, a lowercase letter, and a number.");
@@ -52,19 +65,13 @@ passwordInput.addEventListener('blur', (e) =>{
 
 confirmPasswordInput.addEventListener("blur", (e) => {
   const input = e.target;
-console.log(confirmPasswordInput);
-console.log(passwordInput.value);
-console.log(e);
-
   if (input.value !== passwordInput.value) {
-    input.setCustomValidity("Passwords do not match");
+    input.setCustomValidity("Passwords do not match.");
   }
   else{
     input.setCustomValidity(''); 
   }
   confirmPasswordSpan.textContent = input.validationMessage;
-  // optional span if you have one
-  // confirmPasswordSpan.textContent = input.validationMessage;
 });
 
 
