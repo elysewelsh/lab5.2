@@ -8,30 +8,41 @@ let passwordInput = document.getElementById('password');
 let passwordSpan = document.getElementById('passwordError');
 let confirmPasswordInput = document.getElementById('confirmPassword');
 let confirmPasswordSpan = document.getElementById('confirmPasswordError');
+
+// error counts for successful submission logic
 let usernameErrorCount = 0;
 let passwordErrorCount = 0;
 let confirmPasswordErrorCount = 0;
 let emailErrorCount = 0;
+
+// establish error array for forFocus function to be used in form submission function
 let errors = [];
 
+// data array for input values
 const data = {
         username: registrationForm.elements.username.value,
         email: registrationForm.elements.email.value,
         password: registrationForm.elements.password.value,
     };
+
+// retrieve username from localStorage
 let user = localStorage.getItem('username');
 
-if (user == null) {
-    usernameInput.value = ""
+// display username from localStorage if not null
+if (user == null || user == "") {
+    usernameInput.value = "";
+    usernameSpan.textContent = "";
 } else {
     usernameInput.value = user;
     usernameSpan.textContent = ("Welcome back, " + user);
 };
 
+// verify username when inputted
 usernameInput.addEventListener('blur', (e) =>{
     usernameVerify(e.target);
 });
 
+// verify username value against criteria
 function usernameVerify (input) {
     if (input.validity.valueMissing) {
         input.setCustomValidity('Please choose a username.');
@@ -43,15 +54,18 @@ function usernameVerify (input) {
     }
     else {
         input.setCustomValidity('');
+// if username meets criteria, set error counter to 0
         usernameErrorCount = 0;
     }
     usernameSpan.textContent = input.validationMessage;
 };
 
+// verify email when inputted
 emailInput.addEventListener('blur', (e) => {
     emailVerify(e.target);
 });
 
+// verify email meets criteria
 function emailVerify (input) {
         if (input.validity.typeMismatch) {
         input.setCustomValidity('Please enter a valid email address, for example, name@example.com.');
@@ -61,16 +75,20 @@ function emailVerify (input) {
         emailErrorCount++;
     } else {
         input.setCustomValidity('');
+// if email meets criteria, set error counter to 0
         emailErrorCount = 0;
     }
     emailSpan.textContent = input.validationMessage;
 };
 
+// verify password when inputted
 passwordInput.addEventListener('blur', (e) => {
     passwordVerify(e.target);
 });
 
+// verify password meets criteria
 function passwordVerify (input) {
+// RegEx to check that input includes one uppercase, one lowercase, and one number
     const passwordCheck = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$/;
     if (input.validity.tooShort) {
     input.setCustomValidity("Please enter at least 8 characters.");
@@ -85,16 +103,19 @@ function passwordVerify (input) {
     passwordErrorCount++;
     }
     else {
-    input.setCustomValidity(''); // Clear custom error if valid
+    input.setCustomValidity('');
+// if password meets criteria, set error counter to 0
     passwordErrorCount = 0;
     }
     passwordSpan.textContent = input.validationMessage;
 };
 
+// match confirm password input to password input upon input of confirm password
 confirmPasswordInput.addEventListener("blur", (e) => {
   confirmPasswordVerify(e.target);
 });
 
+// verify confirm password input matches password input
 function confirmPasswordVerify (input) {
   if (input.value !== passwordInput.value) {
     input.setCustomValidity("Passwords do not match.");
@@ -102,37 +123,47 @@ function confirmPasswordVerify (input) {
   }
   else{
     input.setCustomValidity('');
+//if confirm password matches, set error counter to 0
     confirmPasswordErrorCount = 0;
   }
   confirmPasswordSpan.textContent = input.validationMessage;
 };
 
+//submit button
 registrationForm.addEventListener('submit', (e) => {
+//prevent default validation and actions
     e.preventDefault();
+// reset errors array so corrections can be made
     errors = [];
+// run all field validation functions again
     usernameVerify(usernameInput);
     passwordVerify(passwordInput);
     confirmPasswordVerify(confirmPasswordInput);
+// if error counters contain errors, let user know with alert
     if ((usernameErrorCount > 0) || (emailErrorCount > 0) || (passwordErrorCount > 0) || (confirmPasswordErrorCount > 0)) {
         alert("Please review errors before submitting.");
     } else {
+// add validated inputs to data array
         data.username = usernameInput.value;
         data.email = emailInput.value;
         data.password = passwordInput.value;
+// notify user that form was submitted
         alert("Form submitted.");
+// clear inputs
         usernameInput.value = "";
         emailInput.value = "";
         passwordInput.value = "";
         confirmPasswordInput. value = "";
     };
-    console.log(data.username);
-    console.log(registrationForm.elements[1].nextElementSibling.innerText);
+// determine the field to apply focus to
     formFocus();
-    console.log(errors[0]);
+// apply focus to first error on form
     document.getElementById(errors[0]).focus();
+// add validated username input to localStorage
     localStorage.setItem('username', data.username);
 });
 
+// add form element ids to errors array starting from top (first with error will be index 0)
 function formFocus () {
     let inputFields = registrationForm.elements.length;
     for (i = 0; i < inputFields; i++) {
