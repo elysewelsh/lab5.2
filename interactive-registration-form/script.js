@@ -1,16 +1,19 @@
-let registrationForm = document.querySelector('#registrationForm');
-let usernameInput = document.querySelector('#username');
-let usernameSpan = document.querySelector('#usernameError')
-let emailInput = document.querySelector('#email');
-let emailSpan = document.querySelector('#emailError');
-let passwordInput = document.querySelector("#password");
-let passwordSpan = document.querySelector('#passwordError');
-let confirmPasswordInput = document.querySelector("#confirmPassword");
-let confirmPasswordSpan = document.querySelector('#confirmPasswordError');
+// declare and initiate variables to HTML document elements
+let registrationForm = document.getElementById('registrationForm');
+let usernameInput = document.getElementById('username');
+let usernameSpan = document.getElementById('usernameError')
+let emailInput = document.getElementById('email');
+let emailSpan = document.getElementById('emailError');
+let passwordInput = document.getElementById('password');
+let passwordSpan = document.getElementById('passwordError');
+let confirmPasswordInput = document.getElementById('confirmPassword');
+let confirmPasswordSpan = document.getElementById('confirmPasswordError');
 let usernameErrorCount = 0;
 let passwordErrorCount = 0;
 let confirmPasswordErrorCount = 0;
 let emailErrorCount = 0;
+let errors = [];
+
 const data = {
         username: registrationForm.elements.username.value,
         email: registrationForm.elements.email.value,
@@ -106,6 +109,7 @@ function confirmPasswordVerify (input) {
 
 registrationForm.addEventListener('submit', (e) => {
     e.preventDefault();
+    errors = [];
     usernameVerify(usernameInput);
     passwordVerify(passwordInput);
     confirmPasswordVerify(confirmPasswordInput);
@@ -122,8 +126,23 @@ registrationForm.addEventListener('submit', (e) => {
         confirmPasswordInput. value = "";
     };
     console.log(data.username);
+    console.log(registrationForm.elements[1].nextElementSibling.innerText);
+    formFocus();
+    console.log(errors[0]);
+    document.getElementById(errors[0]).focus();
     localStorage.setItem('username', data.username);
 });
+
+function formFocus () {
+    let inputFields = registrationForm.elements.length;
+    for (i = 0; i < inputFields; i++) {
+        if (registrationForm.elements[i].nextElementSibling) {
+            if ((registrationForm.elements[i].nextElementSibling.innerText !== "") && (registrationForm.elements[i].nextElementSibling.innerText !== null)) {
+                errors.push(registrationForm.elements[i].id);
+            }
+    }
+}
+};
 
 // Select all necessary DOM elements (form, inputs, error message spans).
 // Load saved username: On page load, check if a username is saved in localStorage. If so, pre-fill the username field.
