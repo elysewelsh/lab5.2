@@ -20,10 +20,10 @@ let errors = [];
 
 // data array for input values
 const data = {
-        username: registrationForm.elements.username.value,
-        email: registrationForm.elements.email.value,
-        password: registrationForm.elements.password.value,
-    };
+    username: registrationForm.elements.username.value,
+    email: registrationForm.elements.email.value,
+    password: registrationForm.elements.password.value,
+};
 
 // retrieve username from localStorage
 let user = localStorage.getItem('username');
@@ -67,7 +67,7 @@ emailInput.addEventListener('blur', (e) => {
 
 // verify email meets criteria
 function emailVerify (input) {
-        if (input.validity.typeMismatch) {
+    if (input.validity.typeMismatch) {
         input.setCustomValidity('Please enter a valid email address, for example, name@example.com.');
         emailErrorCount++;
     } else if (input.validity.valueMissing) {
@@ -112,21 +112,21 @@ function passwordVerify (input) {
 
 // match confirm password input to password input upon input of confirm password
 confirmPasswordInput.addEventListener("blur", (e) => {
-  confirmPasswordVerify(e.target);
+    confirmPasswordVerify(e.target);
 });
 
 // verify confirm password input matches password input
 function confirmPasswordVerify (input) {
-  if (input.value !== passwordInput.value) {
-    input.setCustomValidity("Passwords do not match.");
-    confirmPasswordErrorCount++;
-  }
-  else{
-    input.setCustomValidity('');
+    if (input.value !== passwordInput.value) {
+        input.setCustomValidity("Passwords do not match.");
+        confirmPasswordErrorCount++;
+    }
+    else{
+        input.setCustomValidity('');
 //if confirm password matches, set error counter to 0
-    confirmPasswordErrorCount = 0;
-  }
-  confirmPasswordSpan.textContent = input.validationMessage;
+        confirmPasswordErrorCount = 0;
+    }
+    confirmPasswordSpan.textContent = input.validationMessage;
 };
 
 //submit button
